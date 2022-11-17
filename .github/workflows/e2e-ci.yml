@@ -14,6 +14,9 @@ jobs:
       - name: npm run test:e2e
         run: npm run test:e2e
 <<<<<<< HEAD
+<<<<<<< HEAD
     
 =======
 >>>>>>> f8c62b1cdb031cd49c9a41f50c0f7565a273a7d1
+=======
+>>>>>>> origin/HEAD
