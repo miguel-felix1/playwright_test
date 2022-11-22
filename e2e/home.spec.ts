@@ -9,7 +9,7 @@ class userClass {
   emailCount: number = 0;
 }
 let user = new userClass();
-let url = "http://localhost:3000/";
+let url = "http://split.kigroup.de/";
 let context;
 
 test.describe('Create new account', () => {
@@ -18,11 +18,10 @@ test.describe('Create new account', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
     await page.goto(url);
-    await expect(page).toHaveTitle('SPLIT');
+    await expect(page).toHaveTitle('SPLIT dev');
   });
 
   test.afterAll(async ({ browser }) => {
-    console.log("acabou");
     await page.close();
   });
 
@@ -31,9 +30,8 @@ test.describe('Create new account', () => {
     await page.getByPlaceholder(' ').click();
     await page.getByPlaceholder(' ').fill(user.email + user.emailCount + user.emailEnd);
     await page.getByRole('button', { name: 'Get Started' }).click({ delay: 500 });
-    let response = await page.waitForResponse(response => response.url().includes(user.email + user.emailCount + user.emailEnd) && response.status() != 404);
+    let response = await page.waitForResponse(response => response.url().includes(user.email + user.emailCount + user.emailEnd));
     let respBody = await response.text();
-    console.log("RESPONSE " + respBody);
     while (response.status() != 404) {
       user.emailCount++;
       await page.getByPlaceholder(' ').fill("");
@@ -46,10 +44,10 @@ test.describe('Create new account', () => {
     await page.getByLabel('First Name').fill('Testing');
     await page.getByLabel('Last Name').click();
     await page.getByLabel('Last Name').fill('Testing');
-    await page.getByRole('textbox', { name: 'Password' }).click();
-    await page.getByRole('textbox', { name: 'Password' }).fill('Testing-123');
-    await page.getByLabel('Confirm Password').click();
-    await page.getByLabel('Confirm Password').fill('Testing-123');
+    await page.click('id=password');
+    await page.fill('id=password', 'Testing-123');
+    await page.click('id=passwordConf');
+    await page.fill('id=passwordConf', 'Testing-123');
     await page.getByRole('button', { name: 'Sign up' }).click();
     await expect(page).toHaveURL('https://split.kigroup.de/dashboard');
     await page.locator('div:has-text("Log out")').nth(2).click();

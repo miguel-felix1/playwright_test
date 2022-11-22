@@ -1,16 +1,13 @@
 {
-  "name": "playwright",
+  "name": "split",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "start": "npm run build && next start",
-    "test:e2e": "playwright test"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.26.1"
+    "@playwright/test": "^1.27.1"
   }
 }
