@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
-
+import { ENVS } from '~/constants';
+import { TestOptions } from '~/types/general';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -10,7 +11,7 @@ import { devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
+const config: PlaywrightTestConfig<TestOptions> = {
   testDir: './e2e',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -28,7 +29,7 @@ const config: PlaywrightTestConfig = {
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html', { open: 'never', outputFolder: './report' }],
@@ -50,10 +51,63 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'bot0',
       use: {
         ...devices['Desktop Chrome'],
-        headless: false
+        headless: false,
+        username: "bot0",
+        counter: "0",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot1',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        username: "bot1",
+        counter: "1",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot2',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        username: "bot2",
+        counter: "2",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot3',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        username: "bot3",
+        counter: "3",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot-stakeholder',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        username: "bot-stakeholder",
+        counter: "stakeholder",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot-admin',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        username: "bot-admin",
+        counter: "admin",
+        password: ENVS.password
       },
     },
 
@@ -109,7 +163,5 @@ const config: PlaywrightTestConfig = {
   //   port: 3000,
   // },
 };
-
-export default config;
 
 export default config;

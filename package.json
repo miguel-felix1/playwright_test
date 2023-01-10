@@ -3,11 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:createUsers":"npx playwright test e2e/testSetupAccounts.spec.ts",
+    "test:createCards":"npx playwright test e2e/testSetupCards.spec.ts",
+    "test:e2e":"npx playwright test e2e/testSetupAccounts.spec.ts && npx playwright test e2e/testSetupCards.spec.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.27.1"
+    "@playwright/test": "^1.27.1",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "playwright-cli": "^0.180.0"
   }
 }
