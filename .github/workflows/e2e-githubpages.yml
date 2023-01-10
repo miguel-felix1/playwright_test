@@ -19,7 +19,7 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Publish HTML report to testresults.marcusfelling.com
+      - name: Publish HTML report to miguel-felix1.github.io
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
