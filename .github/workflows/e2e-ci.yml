@@ -23,3 +23,9 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Copy Folder
+        run: |
+              cp -r playwright-report/
