@@ -44,7 +44,10 @@ const config: PlaywrightTestConfig<TestOptions> = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
     video: 'retain-on-failure',
-    contextOptions: {recordVideo: { dir: "./videos"}}
+    contextOptions: {recordVideo: { dir: "./videos"}},
+    launchOptions: {
+      headless: true : true,
+    },
   },
 
   /* Configure projects for major browsers */
