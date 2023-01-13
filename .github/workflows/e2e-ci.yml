@@ -18,6 +18,7 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
       - name: debug-show-playwright-report-folder
+        if: always()
         run: ls -lf playwright-report
       - uses: actions/upload-artifact@v3
         if: always()
