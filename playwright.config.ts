@@ -46,7 +46,7 @@ const config: PlaywrightTestConfig<TestOptions> = {
     video: 'retain-on-failure',
     contextOptions: {recordVideo: { dir: "./videos"}},
     launchOptions: {
-      headless: true : true,
+      headless: true,
     },
   },
 
