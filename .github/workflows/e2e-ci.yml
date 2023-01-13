@@ -17,6 +17,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
+      - name: debug-show-playwright-report-folder
+        run: ls -lf playwright-report
       - uses: actions/upload-artifact@v3
         if: always()
         with:
