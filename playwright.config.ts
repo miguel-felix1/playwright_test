@@ -56,7 +56,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot0',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot0",
         counter: "0",
         password: ENVS.password
@@ -66,7 +65,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot1',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot1",
         counter: "1",
         password: ENVS.password
@@ -76,7 +74,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot2',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot2",
         counter: "2",
         password: ENVS.password
@@ -86,7 +83,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot3',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot3",
         counter: "3",
         password: ENVS.password
@@ -96,7 +92,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot-stakeholder',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot-stakeholder",
         counter: "stakeholder",
         password: ENVS.password
@@ -106,7 +101,6 @@ const config: PlaywrightTestConfig<TestOptions> = {
       name: 'bot-admin',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         username: "bot-admin",
         counter: "admin",
         password: ENVS.password
