@@ -1,6 +1,7 @@
 import { expect, chromium, Page } from '@playwright/test';
 import { BASEURL } from '../constants';
 import { test } from './utils/accounts';
+import { setupCardsPerUser } from './testSetupCards.spec';
 
 let page: Page;
 
@@ -14,17 +15,16 @@ test.describe("Test Suite Setup", () => {
   test.afterAll(async ({ browser }) => {
     await page.close();
   });
-
   setup();
 });
 
-export default function setup() {
+export async function setup() {
   test("Login or SignUp", async ({ username, password, counter }) => {
-    signUpOrLogin(username, password, counter);
+    await signUpOrLogin(page, username, password, counter);
   });
 };
 
-export async function signUpOrLogin(username, password, counter) {
+export async function signUpOrLogin(page, username, password, counter) {
   const user = username + "@mail.com";
   await page.locator('xpath=//*[@id="email"]').click();
   await page.locator('xpath=//*[@id="email"]').fill(user);
@@ -67,9 +67,7 @@ export async function setupTeamAdminStakeholder(user: string, password: string, 
     await page.locator('text=Teams').first().click();
     await page.waitForTimeout(1000);
     const botTeam = await page.locator('text=bot team').count();
-    console.log(await botTeam);
     if (await botTeam == 0) {
-      console.log(botTeam);
       await page.locator('text=Create new team').click();
       await page.locator('label >> text="Team name" >> xpath=.. >> input').fill("bot team");
       await page.locator('text=Add/remove members').click();
@@ -88,7 +86,51 @@ export async function setupTeamAdminStakeholder(user: string, password: string, 
       await page.locator('text=stakeholder Bot >> xpath=.. >> xpath=.. >> xpath=.. >> button ').last().click();
       await page.locator('span >> text=Stakeholders will not be included in sub-team SPLIT retrospectives. >> xpath=.. >> xpath=..').click();
       await page.locator('button >> text=Create team').click();
-      await page.waitForTimeout(1000);
+    }
+
+    await page.locator("role=main >> role=complementary >> text=Boards").waitFor();
+    await page.locator("role=main >> role=complementary >> text=Boards").click();
+
+    await page.locator('text=bot retro').waitFor();
+    const botBoard = await page.locator('text=bot retro').count();
+    if (await botBoard == 0) {
+        await page.locator("text=Add new board").click();
+        await page.locator("text=SPLIT retro").click();
+        await page.locator("label>>text=Main board name>>xpath=..>>input").fill("bot retro");
+        await page.locator("text=Select Team>>xpath=..>>xpath=..").click();
+        await page.locator('div>>text="bot team (6 members)"').click();
+        await page.locator("text=Create board").click();
+    }
+    await page.getByText('bot retro').first().click();
+    await page.locator('text=Went well').waitFor();
+    const botWellCard = await page.locator('text=Well card ' + user).count();
+    const botWellInput = await page.locator('text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
+    if (await botWellCard == 0) {
+        if (botWellInput != 0) {
+            await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
+        }
+        await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Well card " + user);
+        await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
+    }
+    await page.locator('text=To improve').waitFor();
+    const botImproveCard = await page.locator('text=Improvement card ' + user).count();
+    const botImproveInput = await page.locator('text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
+    if (await botImproveCard == 0) {
+        if (botImproveInput != 0) {
+            await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
+        }
+        await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Improvement card " + user);
+        await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
+    }
+    await page.locator('text=Action points').waitFor();
+    const botActionCard = await page.locator('text=Action card ' + user).count();
+    const botActionInput = await page.locator('text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
+    if (await botActionCard == 0) {
+        if (await botActionInput != 0) {
+            await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
+        }
+        await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Action card " + user);
+        await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
     }
   }
 };
@@ -99,8 +141,6 @@ async function dragDrop(originSelector: string, destinationSelector: string) {
 
   const boxSrc = (await originElement.boundingBox())!;
   const boxDst = (await destinationElement.boundingBox())!;
-  console.log(boxSrc);
-  console.log(boxDst);
 
   await page.dragAndDrop(originSelector, destinationSelector);
   await page.mouse.move(boxSrc.x + boxSrc.width / 2, boxSrc.y + boxSrc.height / 2);
