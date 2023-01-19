@@ -48,6 +48,7 @@ export async function signUp(page, user: string, password: string, counter: stri
 
 export async function setupTeamAdminStakeholder(page: Page, user: string, password: string, counter: string) {
   if (user.includes("admin")) {
+    await page.locator('text=Teams').waitFor();
     await page.locator('text=Teams').first().click();
     await page.locator('text=Create new team').waitFor();
     const botTeam = await page.locator('text=bot team').count();
