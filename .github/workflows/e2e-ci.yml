@@ -1,7 +1,12 @@
 name: Playwright Tests
+concurrency:
+  group: ${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 on:
-  push:
-    branches: [main, master]
+  pull_request:
+    branches:
+      - 'main'
+    types: [opened, synchronize]
 jobs:
   test:
     timeout-minutes: 60
