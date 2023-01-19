@@ -1,7 +1,12 @@
 name: Playwright Tests
+concurrency:
+  group: ${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 on:
-  push:
-    branches: [main, master]
+  pull_request:
+    branches:
+      - 'main'
+    types: [opened, synchronize]
 jobs:
   test:
     timeout-minutes: 60
@@ -15,8 +20,10 @@ jobs:
         run: yarn
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
+      - name: Playwright Setup Accounts
+        run: yarn playwright test e2e/testSetupAccounts.spec.ts
+      - name: Playwright Setup Cards
+        run: yarn playwright test e2e/testSetupCards.spec.ts
       - name: debug-show-playwright-report-folder
         if: always()
         run: ls -lf playwright-report

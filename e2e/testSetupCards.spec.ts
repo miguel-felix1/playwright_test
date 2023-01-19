@@ -1,12 +1,10 @@
 import { expect, chromium, Page } from '@playwright/test';
 import { BASEURL } from '../constants';
-import { signUpOrLogin } from './testSetupAccounts.spec';
-import { test } from './utils/accounts';
+import { signUpOrLogin, test } from './utils/accounts';
 
-let page:Page;
+let page: Page;
 
-test.describe("Test Suite Card Setup",()=>
-{
+test.describe("Test Suite Card Setup", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         await page.goto(BASEURL);
@@ -17,27 +15,22 @@ test.describe("Test Suite Card Setup",()=>
         await page.close();
     });
 
-    //setupCardsPerUser();
+    setupCardsPerUser();
 });
 
 export async function setupCardsPerUser() {
     test('Fill Out Cards', async ({ username, password, counter }) => {
         await signUpOrLogin(page, username, password, counter);
         const user = username + "@mail.com";
-        await page.locator("role=main >> role=complementary >> text=Boards").waitFor();
-        await page.locator("role=main >> role=complementary >> text=Boards").click();
-    
-        await page.locator('text=bot retro').waitFor();
-        const botBoard = await page.locator('text=bot retro').count();
-        if (await botBoard == 0 && user.includes("admin")) {
-            await page.locator("text=Add new board").click();
-            await page.locator("text=SPLIT retro").click();
-            await page.locator("label>>text=Main board name>>xpath=..>>input").fill("bot retro");
-            await page.locator("text=Select Team>>xpath=..>>xpath=..").click();
-            await page.locator('div>>text="bot team (6 members)"').click();
-            await page.locator("text=Create board").click();
+        console.log(user);
+
+        if (!user.includes("admin")) {
+            await page.locator("role=main >> role=complementary >> text=Boards").waitFor();
+            await page.locator("role=main >> role=complementary >> text=Boards").click();
+            await page.locator('text=bot retro').waitFor();
+            await page.getByText('bot retro').first().click();
         }
-        await page.getByText('bot retro').first().click();
+
         await page.locator('text=Went well').waitFor();
         const botWellCard = await page.locator('text=Well card ' + user).count();
         const botWellInput = await page.locator('text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
