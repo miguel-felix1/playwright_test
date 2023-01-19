@@ -105,6 +105,17 @@ const config: PlaywrightTestConfig<TestOptions> = {
         password: ENVS.password
       },
     },
+    
+    // GENERATE YOUR OWN ACCOUNT
+    // {
+    //   name: '<name>',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "<email_start>",
+    //     counter: "<after_the_last_bot>",
+    //     password: "<password>"
+    //   },
+    // },
 
     // {
     //   name: 'firefox',

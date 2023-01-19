@@ -15,8 +15,10 @@ jobs:
         run: yarn
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
+      - name: Playwright Setup Accounts
+        run: yarn playwright test e2e/testSetupAccounts.spec.ts
+      - name: Playwright Setup Cards
+        run: yarn playwright test e2e/testSetupCards.spec.ts
       - name: debug-show-playwright-report-folder
         if: always()
         run: ls -lf playwright-report
