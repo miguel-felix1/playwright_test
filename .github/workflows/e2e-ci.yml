@@ -56,3 +56,16 @@ jobs:
            enable_jekyll: true
            user_name: 'github-actions[bot]'
            user_email: 'github-actions[bot]@users.noreply.github.com'
+           
+      - id: create-folder
+        run: |
+          alwaysNewFolder=$(date '+%Y-%m-%d-%H-%M-%S')
+          mkdir -p $alwaysNewFolder
+          echo hello > $alwaysNewFolder/hello.txt
+          echo "folder=$alwaysNewFolder" >> $GITHUB_OUTPUT
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.create-folder.outputs.folder }}
+          path: ./${{ steps.create-folder.outputs.folder }}
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
