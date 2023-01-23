@@ -38,10 +38,6 @@ jobs:
           COMMIT_ID=$(git rev-parse --short HEAD)
           CURRENT_DATE=$(date +"%H%M%d%m%Y")
           REPORT_DIRECTORY=playwright-report-$CURRENT_DATE-$COMMIT_ID
-          mkdir $REPORT_DIRECTORY
-      - name: Move report files to new directory
-        run: |
-          cp -r playwright-report/* $REPORT_DIRECTORY/
       - name: debug-show-playwright-report-folder
         if: always()
         run: ls -lf $REPORT_DIRECTORY/
@@ -54,11 +50,6 @@ jobs:
       - name: Setup Pages
         if: always()
         uses: actions/configure-pages@v2
-      - name: Upload artifact
-        if: always()
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: $REPORT_DIRECTORY/
       - name: Create Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3.9.1
