@@ -41,10 +41,10 @@ jobs:
           mkdir $REPORT_DIRECTORY
       - name: Move report files to new directory
         run: |
-          cp -r playwright-report/* $REPORT_DIRECTORY
+          cp -r playwright-report/* $REPORT_DIRECTORY/
       - name: debug-show-playwright-report-folder
         if: always()
-        run: ls -lf $REPORT_DIRECTORY
+        run: ls -lf $REPORT_DIRECTORY/
       - uses: actions/upload-artifact@v3
         if: always()
         with:
