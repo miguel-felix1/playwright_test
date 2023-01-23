@@ -32,7 +32,6 @@ jobs:
           REPORT_DIRECTORY=playwright-report-$CURRENT_DATE-$COMMIT_ID
       - name: Move report files to new directory
         run: |
-          mkdir $REPORT_DIRECTORY
           cp -r playwright-report/* $REPORT_DIRECTORY
       - name: debug-show-playwright-report-folder
         if: always()
