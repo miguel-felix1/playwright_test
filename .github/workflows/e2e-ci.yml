@@ -24,14 +24,23 @@ jobs:
         run: yarn playwright test e2e/testSetupAccounts.spec.ts
       - name: Playwright Setup Cards
         run: yarn playwright test e2e/testSetupCards.spec.ts
+      - name: Generate report directory name
+        run: |
+          COMMIT_ID=$(git rev-parse --short HEAD)
+          CURRENT_DATE=$(date +"%H%M%d%m%Y")
+          REPORT_DIRECTORY=playwright-report-$CURRENT_DATE-$COMMIT_ID
+      - name: Move report files to new directory
+        run: |
+          mkdir $REPORT_DIRECTORY
+          cp -r playwright-report/* $REPORT_DIRECTORY
       - name: debug-show-playwright-report-folder
         if: always()
-        run: ls -lf playwright-report
+        run: ls -lf $REPORT_DIRECTORY
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          path: $REPORT_DIRECTORY/
           retention-days: 30
       - name: Setup Pages
         if: always()
@@ -40,32 +49,14 @@ jobs:
         if: always()
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: playwright-report/
-      #- name: Deploy to GitHub Pages
-      #  if: always()
-      #  id: deployment
-      #  uses: actions/deploy-pages@v1
-      - name: Stuff
+          path: $REPORT_DIRECTORY/
+      - name: Create Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3.9.1
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           publish_dir: ./playwright-report
+           publish_dir: $REPORT_DIRECTORY
            keep_files: false
            enable_jekyll: true
            user_name: 'github-actions[bot]'
            user_email: 'github-actions[bot]@users.noreply.github.com'
-           
-      - id: create-folder
-        run: |
-          alwaysNewFolder=$(date '+%Y-%m-%d-%H-%M-%S')
-          mkdir -p $alwaysNewFolder
-          echo hello > $alwaysNewFolder/hello.txt
-          echo "folder=$alwaysNewFolder" >> $GITHUB_OUTPUT
-      
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.create-folder.outputs.folder }}
-          path: ./${{ steps.create-folder.outputs.folder }}
-          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
