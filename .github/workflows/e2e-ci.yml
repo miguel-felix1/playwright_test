@@ -31,6 +31,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
       - name: Check Folders
+        if: always()
         run: ls -lf playwright-report/
       - name: Generate report directory name
         run: |
