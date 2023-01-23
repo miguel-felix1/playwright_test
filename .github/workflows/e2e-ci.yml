@@ -28,8 +28,8 @@ jobs:
         run: |
           COMMIT_ID=$(git rev-parse --short HEAD)
           CURRENT_DATE=$(date +"%H%M%d%m%Y")
-          mkdir $REPORT_DIRECTORY
           REPORT_DIRECTORY=playwright-report-$CURRENT_DATE-$COMMIT_ID
+          mkdir $REPORT_DIRECTORY
       - name: Move report files to new directory
         run: |
           cp -r playwright-report/* $REPORT_DIRECTORY
