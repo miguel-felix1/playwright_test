@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: playwright-report-${{ github.sha }}/
+          path: playwright-report
       #- name: Deploy to GitHub Pages
       #  if: always()
       #  id: deployment
