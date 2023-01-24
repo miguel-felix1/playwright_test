@@ -30,8 +30,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: playwright-report-${{ github.event.pull_request.number }}
+          path: playwright-report-${{ github.event.pull_request.number }}/
           retention-days: 30
       - name: Setup Pages
         if: always()
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: playwright-report/
+          path: playwright-report-${{ github.event.pull_request.number }}/
       #- name: Deploy to GitHub Pages
       #  if: always()
       #  id: deployment
@@ -51,7 +51,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.9.1
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           publish_dir: ./playwright-report
+           publish_dir: ./playwright-report-${{ github.event.pull_request.number }}
            keep_files: false
            enable_jekyll: true
            user_name: 'github-actions[bot]'
