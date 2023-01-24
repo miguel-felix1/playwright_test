@@ -60,51 +60,51 @@ const config: PlaywrightTestConfig<TestOptions> = {
         password: ENVS.password
       },
     },
-    {
-      name: 'bot1',
-      use: {
-        ...devices['Desktop Chrome'],
-        username: "bot1",
-        counter: "1",
-        password: ENVS.password
-      },
-    },
-    {
-      name: 'bot2',
-      use: {
-        ...devices['Desktop Chrome'],
-        username: "bot2",
-        counter: "2",
-        password: ENVS.password
-      },
-    },
-    {
-      name: 'bot3',
-      use: {
-        ...devices['Desktop Chrome'],
-        username: "bot3",
-        counter: "3",
-        password: ENVS.password
-      },
-    },
-    {
-      name: 'bot-stakeholder',
-      use: {
-        ...devices['Desktop Chrome'],
-        username: "bot-stakeholder",
-        counter: "stakeholder",
-        password: ENVS.password
-      },
-    },
-    {
-      name: 'bot-admin',
-      use: {
-        ...devices['Desktop Chrome'],
-        username: "bot-admin",
-        counter: "admin",
-        password: ENVS.password
-      },
-    },
+    // {
+    //   name: 'bot1',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "bot1",
+    //     counter: "1",
+    //     password: ENVS.password
+    //   },
+    // },
+    // {
+    //   name: 'bot2',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "bot2",
+    //     counter: "2",
+    //     password: ENVS.password
+    //   },
+    // },
+    // {
+    //   name: 'bot3',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "bot3",
+    //     counter: "3",
+    //     password: ENVS.password
+    //   },
+    // },
+    // {
+    //   name: 'bot-stakeholder',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "bot-stakeholder",
+    //     counter: "stakeholder",
+    //     password: ENVS.password
+    //   },
+    // },
+    // {
+    //   name: 'bot-admin',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     username: "bot-admin",
+    //     counter: "admin",
+    //     password: ENVS.password
+    //   },
+    // },
     
     // GENERATE YOUR OWN ACCOUNT
     // {
