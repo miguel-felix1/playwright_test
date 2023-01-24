@@ -24,38 +24,34 @@ jobs:
         run: yarn playwright test e2e/testSetupAccounts.spec.ts
       - name: Playwright Setup Cards
         run: yarn playwright test e2e/testSetupCards.spec.ts
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-      - name: Check Folders
-        if: always()
-        run: ls -lf playwright-report/
-      - name: Generate report directory name
-        run: |
-          COMMIT_ID=$(git rev-parse --short HEAD)
-          CURRENT_DATE=$(date +"%H%M%d%m%Y")
-          REPORT_DIRECTORY=playwright-report-$CURRENT_DATE-$COMMIT_ID
       - name: debug-show-playwright-report-folder
         if: always()
-        run: ls -lf $REPORT_DIRECTORY/
+        run: ls -lf playwright-report
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
-          path: $REPORT_DIRECTORY/
+          path: playwright-report/
           retention-days: 30
       - name: Setup Pages
         if: always()
         uses: actions/configure-pages@v2
-      - name: Create Pages
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: playwright-report/
+      #- name: Deploy to GitHub Pages
+      #  if: always()
+      #  id: deployment
+      #  uses: actions/deploy-pages@v1
+      - name: Stuff
         if: always()
         uses: peaceiris/actions-gh-pages@v3.9.1
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           publish_dir: $REPORT_DIRECTORY
+           publish_dir: ./playwright-report
            keep_files: false
            enable_jekyll: true
            user_name: 'github-actions[bot]'
