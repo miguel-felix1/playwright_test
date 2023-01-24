@@ -21,7 +21,7 @@ export async function signUpOrLogin(page: Page, username: string, password: stri
   if (await (body).includes("dashboard")) {
     await setupTeamAdminStakeholder(page, user, password, counter);
   } else {
-    await signUp(page, user, password, counter);
+    //await signUp(page, user, password, counter);
   }
 }
 
