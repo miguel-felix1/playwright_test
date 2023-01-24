@@ -27,6 +27,8 @@ jobs:
       - name: debug-show-playwright-report-folder
         if: always()
         run: ls -lf playwright-report
+      - name: Move Folder
+        run: mv playwright-report playwright-report-${{ github.sha }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
