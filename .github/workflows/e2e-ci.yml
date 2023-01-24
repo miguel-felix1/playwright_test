@@ -8,7 +8,7 @@ on:
       - 'main'
     types: [opened, synchronize]
 env:
-  COMMIT: ${{ github.sha }}
+  COMMIT: ${{ github.event.pull_request.head.sha }}
 jobs:
   test:
     timeout-minutes: 60
