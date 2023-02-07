@@ -44,6 +44,7 @@ const config: PlaywrightTestConfig<TestOptions> = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
     video: process.env.CI ? 'retain-on-failure' : 'on',
+    screenshot: 'only-on-failure',
     launchOptions: {
       headless: process.env.CI ? true : false,
     },
@@ -88,6 +89,69 @@ const config: PlaywrightTestConfig<TestOptions> = {
       },
     },
     {
+      name: 'bot4',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot4",
+        counter: "4",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot5',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot5",
+        counter: "5",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot6',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot6",
+        counter: "6",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot7',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot7",
+        counter: "7",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot8',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot8",
+        counter: "8",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot9',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot9",
+        counter: "9",
+        password: ENVS.password
+      },
+    },
+    {
+      name: 'bot10',
+      use: {
+        ...devices['Desktop Chrome'],
+        username: "bot10",
+        counter: "10",
+        password: ENVS.password
+      },
+    },
+    {
       name: 'bot-stakeholder',
       use: {
         ...devices['Desktop Chrome'],
@@ -105,7 +169,7 @@ const config: PlaywrightTestConfig<TestOptions> = {
         password: ENVS.password
       },
     },
-    
+
     // GENERATE YOUR OWN ACCOUNT
     // {
     //   name: '<name>',
