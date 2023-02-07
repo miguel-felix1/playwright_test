@@ -25,7 +25,7 @@ export async function signUpOrLogin(page: Page, username: string, password: stri
   }
 }
 
-export async function signUp(page, user: string, password: string, counter: string) {
+export async function signUp(page: Page, user: string, password: string, counter: string) {
   await expect(page.locator("text=Sign up")).toBeVisible();
   await page.locator('text=Sign up').click();
   await expect(page.locator('text=Enter your email address to proceed further')).toBeVisible();
@@ -49,7 +49,7 @@ export async function signUp(page, user: string, password: string, counter: stri
 export async function setupTeamAdminStakeholder(page: Page, user: string, password: string, counter: string) {
   if (user.includes("admin")) {
     await page.locator('text=Teams').waitFor();
-    await page.locator('text=Teams').first().click();
+    await page.locator('main >> aside >> div >> text=Teams').click();
     await page.locator('text=Create new team').waitFor();
     const botTeam = await page.locator('text=bot team').count();
     if (await botTeam == 0) {
@@ -77,45 +77,51 @@ export async function setupTeamAdminStakeholder(page: Page, user: string, passwo
     await page.locator("role=main >> role=complementary >> text=Boards").click();
 
     await page.locator('text=Add new board').waitFor();
+    await page.waitForTimeout(250);
     const botBoard = await page.locator('text=bot retro').count();
+    await page.waitForTimeout(250);
     if (await botBoard == 0) {
-        await page.locator("text=Add new board").click();
-        await page.locator("text=SPLIT retro").click();
-        await page.locator("label>>text=Main board name>>xpath=..>>input").fill("bot retro");
-        await page.locator("text=Select Team>>xpath=..>>xpath=..").click();
-        await page.locator('div>>text="bot team (6 members)"').click();
-        await page.locator("text=Create board").click();
+      await page.locator("text=Add new board").click();
+      await page.locator("text=SPLIT retro").click();
+      await page.locator("label>>text=Main board name>>xpath=..>>input").fill("bot retro");
+      await page.locator('text=Configurations').nth(1).click();
+      await page.locator('text=Team/-Sub-teams configurations').click();
+      await page.locator('button[role="combobox"]').click();
+      await page.locator('text=bot team').nth(0).click();
+      await page.locator("text=Create board").click();
     }
-    await page.getByText('bot retro').first().click();
+    await page.locator('text=bot retro >> xpath=.. >> use[href="#arrow-down"] >> xpath=..').first().click();
+    await page.locator('text=Sub-team board 1').click();
     await page.locator('text=Went well').waitFor();
-    const botWellCard = await page.locator('text=Well card ' + user).count();
-    const botWellInput = await page.locator('text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
-    if (await botWellCard == 0) {
-        if (botWellInput != 0) {
-            await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
-        }
-        await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Well card " + user);
-        await page.locator("text=Went well >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
+    await page.waitForTimeout(250);
+    const textAreaCount = await page.locator('textArea').count();
+    const addNewCardCount = await page.locator('text=Add new card').count();
+    if (textAreaCount > 0 || addNewCardCount > 0) {
+      await createCards(page, user);
     }
-    await page.locator('text=To improve').waitFor();
-    const botImproveCard = await page.locator('text=Improvement card ' + user).count();
-    const botImproveInput = await page.locator('text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
-    if (await botImproveCard == 0) {
-        if (botImproveInput != 0) {
-            await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
-        }
-        await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Improvement card " + user);
-        await page.locator("text=To improve >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
-    }
-    await page.locator('text=Action points').waitFor();
-    const botActionCard = await page.locator('text=Action card ' + user).count();
-    const botActionInput = await page.locator('text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card').count();
-    if (await botActionCard == 0) {
-        if (await botActionInput != 0) {
-            await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card").click();
-        }
-        await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> textarea").fill("Action card " + user);
-        await page.locator("text=Action points >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button").last().click();
+    else {
+      await page.locator('text=Sub-team board 2').click();
+      await createCards(page, user);
     }
   }
+};
+
+export async function createCards(page : Page, user : string) {
+  await checkPossibleCard(page, user, "Went well", "Well card");
+  await checkPossibleCard(page, user, "To improve", "Improvement card");
+  await checkPossibleCard(page, user, "Action points", "Action card");
+};
+
+export async function checkPossibleCard(page : Page, user : string, locator: String, text: String) {
+  await page.locator(`text=${locator}`).waitFor();
+  const botCard = await page.locator(`text=${text} ` + user).count();
+  const botInput = await page.locator(`text=${locator} >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card`).count();
+  if (await botCard == 0) {
+    if (await botInput != 0) {
+      await page.locator(`text=${locator} >> xpath=.. >> xpath=.. >> xpath=.. >> text=Add new card`).click();
+    }
+    await page.locator(`text=${locator} >> xpath=.. >> xpath=.. >> xpath=.. >> textarea`).fill(`${text} ` + user);
+    await page.locator(`text=${locator} >> xpath=.. >> xpath=.. >> xpath=.. >> form >> button`).last().click();
+  }
+  return true;
 };
